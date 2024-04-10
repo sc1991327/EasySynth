@@ -11,8 +11,10 @@
 #include "HAL/FileManagerGeneric.h"
 #include "Kismet/GameplayStatics.h"
 #include "Materials/MaterialInstanceConstant.h"
+#include "EngineUtils.h"
 
 #include "PathUtils.h"
+#include "Engine/StaticMeshActor.h"
 #include "TextureStyles/TextureBackupManager.h"
 #include "TextureStyles/TextureMappingAsset.h"
 
@@ -276,6 +278,76 @@ TArray<const FSemanticClass*> UTextureStyleManager::SemanticClasses() const
 	}
 	return SemanticClasses;
 }
+
+void UTextureStyleManager::ApplySemanticClassToTagedActors()
+{
+
+	TArray<UObject*> SelectedActors;
+	GEditor->GetSelectedActors()->GetSelectedObjects(AActor::StaticClass(), SelectedActors);
+
+	if (SelectedActors.Num() <= 0)
+	{
+		UE_LOG(LogEasySynth, Warning, TEXT("%s: not have the selected actor!"),
+			*FString(__FUNCTION__));
+		return;
+	}
+
+	AActor* SelectActor = Cast<AActor>(SelectedActors[0]);
+	if (!SelectActor || !SelectActor->GetWorld())
+	{
+		UE_LOG(LogEasySynth, Warning, TEXT("%s: get world failed!"),
+			*FString(__FUNCTION__));
+		return;
+	}
+
+	if (SelectActor->Tags.Num() <= 0)
+	{
+		UE_LOG(LogEasySynth, Warning, TEXT("%s: not set the selected actor's tags!"),
+			*FString(__FUNCTION__));
+		return;
+	}
+
+
+	TArray<UObject*> TagedActors;
+	for (int TagIndex = 0; TagIndex < SelectActor->Tags.Num(); ++TagIndex)
+	{
+		FString ClassName = SelectActor->Tags[TagIndex].ToString();
+		if (!TextureMappingAsset->SemanticClasses.Contains(ClassName))
+		{
+			UE_LOG(LogEasySynth, Warning, TEXT("%s: Received semantic class '%s' not found"),
+				*FString(__FUNCTION__), *ClassName);
+			return;
+		}
+
+		UE_LOG(LogEasySynth, Log, TEXT("%s: Setting the '%s' semantic class to selected actors"),
+			*FString(__FUNCTION__), *ClassName)
+
+		for (TActorIterator<AActor> ItActor(SelectedActors[0]->GetWorld()); ItActor; ++ItActor)
+		{
+			AActor* Actor = *ItActor;
+			if (Actor && Actor->ActorHasTag(SelectActor->Tags[TagIndex]))
+			{
+				TagedActors.Add(Actor);
+			}
+		}
+
+		for (UObject* TagedObject : TagedActors)
+		{
+			AActor* TagedActor = Cast<AActor>(TagedObject);
+			if (TagedActor == nullptr)
+			{
+				UE_LOG(LogEasySynth, Log, TEXT("%s: Got null actor"), *FString(__FUNCTION__))
+					return;
+			}
+
+			// Set the class to the actor
+			SetSemanticClassToActor(TagedActor, ClassName);
+		}
+	}
+
+	SaveTextureMappingAsset();
+}
+
 
 void UTextureStyleManager::ApplySemanticClassToSelectedActors(const FString& ClassName)
 {

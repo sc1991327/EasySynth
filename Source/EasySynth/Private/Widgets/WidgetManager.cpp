@@ -162,6 +162,17 @@ TSharedRef<SDockTab> FWidgetManager::OnSpawnPluginTab(const FSpawnTabArgs& Spawn
 			+SScrollBox::Slot()
 			.Padding(2)
 			[
+				SNew(SButton)
+				.OnClicked_Raw(this, &FWidgetManager::OnPickSemanticByTagsClicked)
+				.Content()
+				[
+					SNew(STextBlock)
+					.Text(LOCTEXT("PickSemanticByTagsButtonText", "Pick semantic by tags"))
+				]
+			]
+			+SScrollBox::Slot()
+			.Padding(2)
+			[
 				SAssignNew(SemanticClassComboBox, SComboBox<TSharedPtr<FString>>)
 				.OptionsSource(&SemanticClassNames)
 				.ContentPadding(2)
@@ -450,6 +461,17 @@ bool FWidgetManager::GetIsRenderImagesEnabled() const
 		SequenceRendererTargets.AnyOptionSelected() &&
 		SequenceRenderer != nullptr && !SequenceRenderer->IsRendering();
 }
+
+FReply FWidgetManager::OnPickSemanticByTagsClicked()
+{
+
+	UE_LOG(LogEasySynth, Log, TEXT("%s: pick tag button clicked"), *FString(__FUNCTION__))
+	TextureStyleManager->ApplySemanticClassToTagedActors();
+	SemanticClassComboBox->ClearSelection();
+
+	return FReply::Handled();
+}
+
 
 FReply FWidgetManager::OnRenderImagesClicked()
 {

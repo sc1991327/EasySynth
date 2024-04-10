@@ -35,6 +35,9 @@ private:
 	/** Handles manage semantic classes button click */
 	FReply OnManageSemanticClassesClicked();
 
+	/** Handles render images button click */
+	FReply OnPickSemanticByTagsClicked();
+
 	/** Callback function handling the choosing of the semantic class inside the combo box */
 	void OnSemanticClassComboBoxSelectionChanged(TSharedPtr<FString> StringItem, ESelectInfo::Type SelectInfo);
 
