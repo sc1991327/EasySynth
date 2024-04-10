@@ -69,6 +69,9 @@ public:
 	/** Applies desired class to all selected actors */
 	void ApplySemanticClassToSelectedActors(const FString& ClassName);
 
+	/** Applies desired class to all selected actors */
+	void ApplySemanticClassToTagedActors();
+
 	/** Update mesh materials to show requested texture styles */
 	void CheckoutTextureStyle(const ETextureStyle NewTextureStyle);
 
