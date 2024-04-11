@@ -15,6 +15,20 @@ class UTextureBackupManager;
 class UTextureMappingAsset;
 
 
+USTRUCT(BlueprintType)
+struct EASYSYNTH_API FMeshSemanticTableRowBase : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	/** The semantic class name */
+	UPROPERTY(EditAnywhere, Category = "Mesh Semantic Properties")
+	TSoftObjectPtr<UStaticMesh> MeshObject;
+
+	UPROPERTY(EditAnywhere, Category = "Mesh Semantic Properties")
+	FString MeshSemantic;
+};
+
+
 /** Enum representing mesh texture styles */
 UENUM()
 enum class ETextureStyle : uint8
@@ -68,6 +82,9 @@ public:
 
 	/** Applies desired class to all selected actors */
 	void ApplySemanticClassToSelectedActors(const FString& ClassName);
+
+	/** Applies desired class to all selected actors */
+	void ApplySemanticClassToDataTableActors(const FMeshSemanticTableRowBase& DataTableRow);
 
 	/** Applies desired class to all selected actors */
 	void ApplySemanticClassToTagedActors();
