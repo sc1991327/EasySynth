@@ -145,6 +145,28 @@ TSharedRef<SDockTab> FWidgetManager::OnSpawnPluginTab(const FSpawnTabArgs& Spawn
 					.Text(LOCTEXT("PickSemanticByTagsButtonText", "Pick semantic by tags"))
 				]
 			]
+			+ SScrollBox::Slot()
+			.Padding(2)
+			[
+				SNew(SObjectPropertyEntryBox)
+					.AllowedClass(UDataTable::StaticClass())
+					.ObjectPath_Raw(this, &FWidgetManager::GetDataTablePath)
+					.OnObjectChanged_Raw(this, &FWidgetManager::OnDataTableSelected)
+					.AllowClear(true)
+					.DisplayUseSelected(true)
+					.DisplayBrowse(true)
+			]
+			+SScrollBox::Slot()
+			.Padding(2)
+			[
+				SNew(SButton)
+				.OnClicked_Raw(this, &FWidgetManager::OnPickSemanticByDataTableClicked)
+				.Content()
+				[
+					SNew(STextBlock)
+					.Text(LOCTEXT("PickSemanticByTagsButtonText", "Pick semantic by data table"))
+				]
+			]
 			+SScrollBox::Slot()
 			.Padding(2)
 			[
@@ -220,6 +242,15 @@ FString FWidgetManager::GetSequencerPath() const
 	if (LevelSequenceAssetData.IsValid())
 	{
 		return LevelSequenceAssetData.ObjectPath.ToString();
+	}
+	return "";
+}
+
+FString FWidgetManager::GetDataTablePath() const
+{
+	if (DataTableAssetData.IsValid())
+	{
+		return DataTableAssetData.ObjectPath.ToString();
 	}
 	return "";
 }
@@ -302,6 +333,30 @@ FReply FWidgetManager::OnPickSemanticByTagsClicked()
 
 	return FReply::Handled();
 }
+
+FReply FWidgetManager::OnPickSemanticByDataTableClicked()
+{
+	UE_LOG(LogEasySynth, Log, TEXT("%s: pick data table button clicked"), *FString(__FUNCTION__))
+
+
+	// Update the data table.
+	UDataTable* CurrDataTable = Cast<UDataTable>(DataTableAssetData.GetAsset());
+	if (CurrDataTable && CurrDataTable->GetRowStruct()->IsChildOf(FMeshSemanticTableRowBase::StaticStruct()))
+	{
+		FString ContextString(TEXT("FWidgetManager::OnPickSemanticByDataTableClicked"));
+		TArray<FMeshSemanticTableRowBase*> MeshSemanticTableRows;
+		CurrDataTable->GetAllRows(ContextString, MeshSemanticTableRows);
+
+		for (const FMeshSemanticTableRowBase* MeshSemanticRow : MeshSemanticTableRows)
+		{
+			TextureStyleManager->ApplySemanticClassToDataTableActors(*MeshSemanticRow);
+		}
+	}
+	SemanticClassComboBox->ClearSelection();
+
+	return FReply::Handled();
+}
+
 
 
 FReply FWidgetManager::OnRenderImagesClicked()

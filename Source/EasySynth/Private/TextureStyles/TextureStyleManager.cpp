@@ -279,6 +279,48 @@ TArray<const FSemanticClass*> UTextureStyleManager::SemanticClasses() const
 	return SemanticClasses;
 }
 
+void UTextureStyleManager::ApplySemanticClassToDataTableActors(const FMeshSemanticTableRowBase& DataTableRow)
+{
+	// To get world actors
+	TArray<UObject*> SelectedActors;
+	GEditor->GetSelectedActors()->GetSelectedObjects(AActor::StaticClass(), SelectedActors);
+
+	if (SelectedActors.Num() <= 0)
+	{
+		UE_LOG(LogEasySynth, Warning, TEXT("%s: not have the selected actor!"),
+			*FString(__FUNCTION__));
+		return;
+	}
+
+	AActor* SelectActor = Cast<AActor>(SelectedActors[0]);
+	if (!SelectActor || !SelectActor->GetWorld())
+	{
+		UE_LOG(LogEasySynth, Warning, TEXT("%s: get world failed!"),
+			*FString(__FUNCTION__));
+		return;
+	}
+
+	// get class actor
+	for (TActorIterator<AActor> ItActor(SelectedActors[0]->GetWorld()); ItActor; ++ItActor)
+	{
+		AActor* Actor = *ItActor;
+		for (UActorComponent* Component : Actor->GetComponents())
+		{
+			if (Component->IsA(UStaticMeshComponent::StaticClass()))
+			{
+				if(Cast<UStaticMeshComponent>(Component)->GetStaticMesh() == DataTableRow.MeshObject)
+				{
+					// Set the class to the actor
+					FString ClassName = DataTableRow.MeshSemantic;
+					SetSemanticClassToActor(Actor, ClassName);
+				}
+			}
+		}
+	}
+
+	SaveTextureMappingAsset();
+}
+
 void UTextureStyleManager::ApplySemanticClassToTagedActors()
 {
 

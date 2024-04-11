@@ -38,6 +38,8 @@ private:
 	/** Handles render images button click */
 	FReply OnPickSemanticByTagsClicked();
 
+	FReply OnPickSemanticByDataTableClicked();
+
 	/** Callback function handling the choosing of the semantic class inside the combo box */
 	void OnSemanticClassComboBoxSelectionChanged(TSharedPtr<FString> StringItem, ESelectInfo::Type SelectInfo);
 
@@ -47,8 +49,12 @@ private:
 	/** Callback function handling the update of the selected sequencer */
 	void OnSequencerSelected(const FAssetData& AssetData) { LevelSequenceAssetData = AssetData; }
 
+	void OnDataTableSelected(const FAssetData& AssetData) { DataTableAssetData = AssetData; }
+
 	/** Callback function providing the path to the selected sequencer asset */
 	FString GetSequencerPath() const;
+
+	FString GetDataTablePath() const;
 
 	/** Checks whether renderer target check box should be checked */
 	ECheckBoxState RenderTargetsCheckedState(const FRendererTargetOptions::TargetType TargetType) const;
@@ -113,6 +119,8 @@ private:
 
 	/** Currently selected sequencer asset data */
 	FAssetData LevelSequenceAssetData;
+
+	FAssetData DataTableAssetData;
 
 	/** Widget's copy of the chosen renderer targets set */
 	FRendererTargetOptions SequenceRendererTargets;
