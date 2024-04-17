@@ -164,7 +164,7 @@ TSharedRef<SDockTab> FWidgetManager::OnSpawnPluginTab(const FSpawnTabArgs& Spawn
 				.Content()
 				[
 					SNew(STextBlock)
-					.Text(LOCTEXT("PickSemanticByTagsButtonText", "Pick semantic by data table"))
+					.Text(LOCTEXT("PickSemanticByDataTableButtonText", "Pick semantic by data table"))
 				]
 			]
 			+SScrollBox::Slot()
