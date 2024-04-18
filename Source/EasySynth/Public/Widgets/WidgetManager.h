@@ -4,9 +4,6 @@
 
 #include "CoreMinimal.h"
 
-#include "SequenceRenderer.h"
-
-#include "CameraRig/CameraRigRosInterface.h"
 #include "TextureStyles/SemanticCsvInterface.h"
 #include "Widgets/SemanticClassesWidgetManager.h"
 
@@ -46,61 +43,23 @@ private:
 	/** Callback function handling the choosing of the texture style inside the combo box */
 	void OnTextureStyleComboBoxSelectionChanged(TSharedPtr<FString> StringItem, ESelectInfo::Type SelectInfo);
 
-	/** Callback function handling the update of the selected sequencer */
-	void OnSequencerSelected(const FAssetData& AssetData) { LevelSequenceAssetData = AssetData; }
-
+	/** Callback function handling the update of the selected datatable */
 	void OnDataTableSelected(const FAssetData& AssetData) { DataTableAssetData = AssetData; }
 
-	/** Callback function providing the path to the selected sequencer asset */
-	FString GetSequencerPath() const;
-
 	FString GetDataTablePath() const;
-
-	/** Checks whether renderer target check box should be checked */
-	ECheckBoxState RenderTargetsCheckedState(const FRendererTargetOptions::TargetType TargetType) const;
-
-	/** Target render images checkbox handling */
-	void OnRenderTargetsChanged(ECheckBoxState NewState, const FRendererTargetOptions::TargetType TargetType);
-
-	// Callback function handling the choosing of the output format inside the combo box
-	void OnOutputFormatSelectionChanged(
-		TSharedPtr<FString> StringItem,
-		ESelectInfo::Type SelectInfo,
-		const FRendererTargetOptions::TargetType TargetType);
-
-	/** Returns the selected output format of the target */
-	FText SelectedOutputFormat(const FRendererTargetOptions::TargetType TargetType) const;
 
 	/** Callback function handling the update of the output directory */
 	void OnOutputDirectoryChanged(const FString& Directory) { OutputDirectory = Directory; }
 
-	/** Checks if render images button should be enabled */
-	bool GetIsRenderImagesEnabled() const;
-
-	/** Handles render images button click */
-	FReply OnRenderImagesClicked();
-
 	/** Handles the semantic classes updated event */
 	void OnSemanticClassesUpdated();
-
-	/** Handles the sequence renderer finished event */
-	void OnRenderingFinished(bool bSuccess);
 
 	/**
 	 * Local members
 	*/
 
-	/** Load widget options states on startup */
-	void LoadWidgetOptionStates();
-
-	/** Save widget options states */
-	void SaveWidgetOptionStates();
-
 	/** Interface that handles importing semantic classes from CSV */
 	FSemanticCsvInterface SemanticCsvInterface;
-
-	/** Interface that handles importing camera rigs from ROS JSON files */
-	FCameraRigRosInterface CameraRigRosInterface;
 
 	/** Manager that handles semantic class widget */
 	FSemanticClassesWidgetManager SemanticsWidget;
@@ -122,9 +81,6 @@ private:
 
 	FAssetData DataTableAssetData;
 
-	/** Widget's copy of the chosen renderer targets set */
-	FRendererTargetOptions SequenceRendererTargets;
-
 	/** Output image resolution, with the image size always being an even number */
 	FIntPoint OutputImageResolution;
 
@@ -136,12 +92,6 @@ private:
 	 * must be added to the root to avoid garbage collection
 	*/
 	UTextureStyleManager* TextureStyleManager;
-
-	/**
-	 * Module that runs sequence rendering,
-	 * must be added to the root to avoid garbage collection
-	*/
-	USequenceRenderer* SequenceRenderer;
 
 	/** The name of the texture style representing original colors */
 	static const FString TextureStyleColorName;

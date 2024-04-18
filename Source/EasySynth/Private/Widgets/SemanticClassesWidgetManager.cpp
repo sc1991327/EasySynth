@@ -3,6 +3,7 @@
 #include "Widgets/SemanticClassesWidgetManager.h"
 
 #include "EasySynth.h"
+#include "TextureStyles/TextureStyleManager.h"
 #include "TextureStyles/TextureMappingAsset.h"
 #include "Interfaces/IMainFrameModule.h"
 #include "Widgets/Colors/SColorBlock.h"

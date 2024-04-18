@@ -17,9 +17,6 @@ class FSemanticCsvInterface
 public:
 	FSemanticCsvInterface() {}
 
-	/** Handles importing semantic classes from a CSV file */
-	FReply OnImportSemanticClassesClicked(UTextureStyleManager* TextureStyleManager);
-
 	/** Handles exporting semantic classes into a CSV file */
 	bool ExportSemanticClasses(const FString& OutputDir, UTextureMappingAsset* TextureMappingAsset);
 };
