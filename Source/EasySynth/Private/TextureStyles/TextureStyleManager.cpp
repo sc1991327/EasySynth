@@ -13,6 +13,7 @@
 #include "Materials/MaterialInstanceConstant.h"
 #include "EngineUtils.h"
 
+#include "EasySynth.h"
 #include "PathUtils.h"
 #include "Engine/StaticMeshActor.h"
 #include "TextureStyles/TextureBackupManager.h"

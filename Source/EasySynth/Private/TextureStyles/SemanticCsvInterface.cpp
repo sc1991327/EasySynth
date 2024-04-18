@@ -4,6 +4,9 @@
 
 #include "Serialization/Csv/CsvParser.h"
 
+#include "EasySynth.h"
+#include "IDesktopPlatform.h"
+#include "DesktopPlatformModule.h"
 #include "TextureStyles/TextureMappingAsset.h"
 #include "TextureStyles/TextureStyleManager.h"
 

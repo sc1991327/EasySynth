@@ -8,6 +8,9 @@
 #include "MoviePipelineQueueSubsystem.h"
 #include "MovieRenderPipelineSettings.h"
 
+#include "EasySynth.h"
+#include "ISequencer.h"
+#include "Sections/MovieSceneCameraCutSection.h"
 #include "EXROutput/MoviePipelineEXROutputLocal.h"
 #include "PathUtils.h"
 #include "RendererTargets/CameraPoseExporter.h"

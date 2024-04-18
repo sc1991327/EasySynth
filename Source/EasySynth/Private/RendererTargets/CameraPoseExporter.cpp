@@ -5,6 +5,8 @@
 #include "Camera/CameraComponent.h"
 #include "EntitySystem/Interrogation/MovieSceneInterrogationLinker.h"
 #include "EntitySystem/MovieSceneEntitySystemTypes.h"
+
+#include "EasySynth.h"
 #include "ILevelSequenceEditorToolkit.h"
 #include "ISequencer.h"
 #include "Kismet/KismetMathLibrary.h"

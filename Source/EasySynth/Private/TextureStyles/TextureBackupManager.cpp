@@ -2,6 +2,8 @@
 
 #include "TextureStyles/TextureBackupManager.h"
 
+#include "Materials/MaterialInstanceConstant.h"
+#include "EasySynth.h"
 #include "LandscapeProxy.h"
 
 

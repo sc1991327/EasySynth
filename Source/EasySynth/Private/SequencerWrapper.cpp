@@ -2,6 +2,7 @@
 
 #include "SequencerWrapper.h"
 
+#include "EasySynth.h"
 #include "ILevelSequenceEditorToolkit.h"
 #include "ISequencer.h"
 #include "LevelSequence.h"

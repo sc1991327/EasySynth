@@ -5,6 +5,7 @@
 #include "Camera/CameraComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
 
+#include "EasySynth.h"
 #include "LevelSequence.h"
 #include "TextureStyles/TextureStyleManager.h"
 
